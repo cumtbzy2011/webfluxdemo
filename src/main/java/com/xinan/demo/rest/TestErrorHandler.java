@@ -1,6 +1,5 @@
 package com.xinan.demo.rest;
 
-import com.sun.xml.internal.ws.handler.HandlerException;
 import org.springframework.core.annotation.Order;
 import org.springframework.core.io.buffer.DataBuffer;
 import org.springframework.http.HttpStatus;
@@ -18,6 +17,8 @@ import java.nio.charset.StandardCharsets;
  */
 @Component
 //要比DefaultErrorWebExceptionHandler优先级-1高
+    //比较底层，如果异常被@ExceptionHandler处理了，那么将不会由此处理
+    //可以处理filter和webHandler中的异常
 @Order(-2)
 public class TestErrorHandler implements WebExceptionHandler {
     @Override

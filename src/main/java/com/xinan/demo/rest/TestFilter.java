@@ -15,7 +15,7 @@ import reactor.core.publisher.Mono;
 public class TestFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
-        int i = 1 / 0;
+//        int i = 1 / 0;
         ServerWebExchange postExchange = exchange.mutate()
             .request(builder -> builder.method(HttpMethod.POST))
             .build();

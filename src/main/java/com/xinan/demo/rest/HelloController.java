@@ -3,10 +3,20 @@ package com.xinan.demo.rest;
 import com.xinan.demo.util.Try;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.format.datetime.DateFormatter;
+import org.springframework.http.CacheControl;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
+import java.math.BigDecimal;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 /**
@@ -25,8 +35,8 @@ public class HelloController {
     @GetMapping
     public Mono<String> say(String name) {
         return Mono.just(name)
-            .publishOn(Schedulers.elastic())
-            .map(Try.of(this::hello));
+          .publishOn(Schedulers.elastic())
+          .map(Try.of(this::hello));
     }
 
     private String hello(String name) throws InterruptedException {
@@ -38,18 +48,46 @@ public class HelloController {
 
     @PostMapping("error")
     public Mono<String> testError() {
-        throw new RuntimeException("test error");
+        //两种异常方式都会被exceptionhandler处理
+//        throw new RuntimeException("test error-1");
+        return Mono.error(new RuntimeException("test error-2"));
     }
 
-    @ExceptionHandler
-    public void test() {
-
+    @ExceptionHandler(Exception.class)
+    public String test(Exception e) {
+        return "result: " + e.getMessage();
     }
 
     @PostMapping
-    public Mono<String> testPost(String name) {
-        return Mono.just("post from " + name);
+    public Mono<BigDecimal> testPost(String name, LocalDateTime time, BigDecimal bd) {
+        System.out.println("bd:" + bd);
+        System.out.println("time: " + time);
+        return Mono.just(bd);
     }
+
+    @PostMapping("bean")
+    public Mono<LocalDateTime> testPostBean(@RequestBody Mono<TestBean> testBean) {
+        return testBean.map(TestBean::getLage);
+    }
+
+    @PostMapping("bean2/{name}")
+    public ResponseEntity<TestBean> testCache(@PathVariable String name) {
+        TestBean result = new TestBean();
+        result.setName(name);
+        result.setAge(new Date());
+        result.setLage(LocalDateTime.now());
+        return ResponseEntity
+          .ok()
+          .cacheControl(CacheControl.maxAge(30, TimeUnit.DAYS))
+          .eTag(name)
+          .body(result);
+    }
+
+    @InitBinder
+    public void initBinder(WebDataBinder binder){
+        binder.addCustomFormatter(new DateFormatter("yyyy-MM-dd"));
+    }
+
 
     @GetMapping("nob")
     public Mono<String> nob() {
@@ -59,10 +97,10 @@ public class HelloController {
     @GetMapping("order")
     public Mono<Integer> order() {
         return Mono.fromSupplier(Try.of(this::decrementAndGetStock))
-            .map(Try.of(this::incrAndGetOrder))
-            .subscribeOn(Schedulers.elastic())
-            .doOnError(t -> log.error("order error: ", t))
-            .onErrorReturn(-1);
+          .map(Try.of(this::incrAndGetOrder))
+          .subscribeOn(Schedulers.elastic())
+          .doOnError(t -> log.error("order error: ", t))
+          .onErrorReturn(-1);
     }
 
     private Integer decrementAndGetStock() throws InterruptedException {
@@ -80,20 +118,6 @@ public class HelloController {
         System.out.printf("[order], current-thread is [%s]\n", Thread.currentThread().getName());
         return order.incrementAndGet();
     }
-
-    public static void main(String[] args) {
-        String a = "http:2";
-        System.out.println(handleUrl(a));
-        System.out.println(a);
-    }
-
-    private static String handleUrl(String url) {
-        url = StringUtils.removeStartIgnoreCase(url, "http:");
-        url = StringUtils.removeStartIgnoreCase(url, "https:");
-        return url;
-    }
-
-
 }
 
 
