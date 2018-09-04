@@ -5,14 +5,17 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.http.CacheControl;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Schedulers;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Locale;
@@ -59,11 +62,13 @@ public class HelloController {
     }
 
     @PostMapping
-    public Mono<BigDecimal> testPost(String name, LocalDateTime time, BigDecimal bd) {
+    public Mono<BigDecimal> testPost(String name, Date time, BigDecimal bd) {
         System.out.println("bd:" + bd);
         System.out.println("time: " + time);
         return Mono.just(bd);
     }
+
+
 
     @PostMapping("bean")
     public Mono<LocalDateTime> testPostBean(@RequestBody Mono<TestBean> testBean) {
@@ -117,6 +122,15 @@ public class HelloController {
         Thread.sleep(1000);
         System.out.printf("[order], current-thread is [%s]\n", Thread.currentThread().getName());
         return order.incrementAndGet();
+    }
+
+
+    //如果不是application/stream json則呼叫端無法滾動得到結果，將一直阻塞等待資料流結束或超時。
+    @GetMapping(value = "stream", produces = MediaType.APPLICATION_STREAM_JSON_VALUE)
+    public Flux<TestBean> getBeanStream() {
+        return Flux.interval(Duration.ofMillis(500))
+            .map(l -> new TestBean("bian", new Date(), LocalDateTime.now()))
+            .log();
     }
 }
 

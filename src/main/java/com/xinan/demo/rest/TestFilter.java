@@ -11,7 +11,7 @@ import reactor.core.publisher.Mono;
  * @author xinan
  * @date 2018/8/25
  */
-@Component
+//@Component
 public class TestFilter implements WebFilter {
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, WebFilterChain chain) {
