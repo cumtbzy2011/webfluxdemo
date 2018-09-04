@@ -36,15 +36,6 @@ public class MvcConfig implements WebFluxConfigurer {
         });
     }
 
-    @Bean
-    public TestHandler testHandler() {
-        return new TestHandler();
-    }
 
-    @Bean
-    public RouterFunction<ServerResponse> routes(TestHandler testHandler) {
-        return RouterFunctions.route(RequestPredicates.POST("/testr"),
-          testHandler::echoName);
-    }
 
 }

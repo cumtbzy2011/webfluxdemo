@@ -9,7 +9,7 @@ import reactor.core.publisher.Mono;
 
 import static org.springframework.web.reactive.function.server.ServerResponse.ok;
 
-public class TestHandler {
+public class TestHandler2 {
 
     public Mono<ServerResponse> echoName(ServerRequest request) {
         return ok()
