@@ -36,6 +36,16 @@ public class MvcConfig implements WebFluxConfigurer {
         });
     }
 
-
+//          return db.connection()
+//          .map(connection -> {
+//              connection.setAutoCommit(false);
+//              PreparedStatement pstmt = connection.prepareStatement(sql);
+//              pstmt.setString(1, post.getContent());
+//              pstmt.setString(2, post.getContent());
+//              int i = pstmt.executeUpdate();
+//              pstmt.close();
+//              connection.commit();
+//              return i;
+//          });
 
 }
