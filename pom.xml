@@ -6,7 +6,12 @@
 
     <groupId>com.xinan.demo</groupId>
     <artifactId>webflux-demo</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>route</module>
+        <module>webfilter</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
