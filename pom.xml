@@ -12,7 +12,6 @@
         <module>route</module>
         <module>webfilter</module>
         <module>exception</module>
-        <module>websocketAndStream</module>
         <module>security</module>
         <module>redis</module>
         <module>mongo</module>
@@ -20,7 +19,6 @@
         <module>tomcat</module>
         <module>session</module>
         <module>multipartAndstream</module>
-        <module>codec</module>
         <module>websocket</module>
     </modules>
 

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="echo">
+
+</div>
+<div>
+    <input id="message" type="text">
+</div>
+<div>
+    <button id="open">连接</button>
+    <button id="send">发送</button>
+</div>
+</body>
+<script type="text/javascript">
+    var ws;
+    // 绑定点击事件
+    document.getElementById("open").addEventListener('click', websocket_open);
+    document.getElementById("send").addEventListener('click', websocket_send);
+    // websocket测试函数
+    function websocket_open(){
+        // 创建websocket对象
+        ws = new WebSocket("ws://localhost:8080/echo");
+        // open事件
+        ws.onopen = function(){
+            console.log("ws open")
+        };
+        // message事件
+        ws.onmessage = function(event){
+            var message_text = document.createTextNode(event.data);
+            var br = document.createElement("br");
+            document.getElementById("echo").appendChild(message_text);
+            document.getElementById("echo").appendChild(br);
+            console.log(event.data);
+        };
+        // close事件
+        ws.onclose = function (ev) { console.log('close'); };
+
+        // error事件
+        ws.onerror = function (ev) { console.log('error'); };
+    }
+    function websocket_send() {
+        var value = document.getElementById("message").value;
+        ws.send(value);
+    }
+</script>
+</html>
