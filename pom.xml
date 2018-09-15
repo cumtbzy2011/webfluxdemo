@@ -20,6 +20,8 @@
         <module>tomcat</module>
         <module>session</module>
         <module>multipartAndstream</module>
+        <module>codec</module>
+        <module>websocket</module>
     </modules>
 
     <parent>
