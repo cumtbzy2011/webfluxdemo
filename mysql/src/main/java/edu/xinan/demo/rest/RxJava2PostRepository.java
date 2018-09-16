@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.xinan.demo.rest;
 
 import io.reactivex.Observable;
@@ -34,8 +29,8 @@ public class RxJava2PostRepository {
         return this.db.select("select * from posts")
             .get(
                 rs -> new Post(rs.getLong("id"),
-                    rs.getString("title"),
-                    rs.getString("content")
+                    rs.getString("name"),
+                    rs.getInt("age")
                 )
             )
             .toObservable();
@@ -46,8 +41,8 @@ public class RxJava2PostRepository {
             .parameter(id)
             .get(
                 rs -> new Post(rs.getLong("id"),
-                    rs.getString("title"),
-                    rs.getString("content")
+                    rs.getString("name"),
+                    rs.getInt("age")
                 )
             )
             .firstElement()
@@ -55,8 +50,8 @@ public class RxJava2PostRepository {
     }
 
     public Single<Integer> save(Post post) {
-        return this.db.update("insert into posts(title, content) values(?, ?)")
-            .parameters(post.getTitle(), post.getContent())
+        return this.db.update("insert into posts(name, age) values(?, ?)")
+            .parameters(post.getName(), post.getAge())
             .returnGeneratedKeys()
             .getAs(Integer.class)
             .firstElement()
@@ -70,8 +65,8 @@ public class RxJava2PostRepository {
           .map(connection -> {
               connection.setAutoCommit(false);
               PreparedStatement pstmt = connection.prepareStatement(sql);
-              pstmt.setString(1, post.getContent());
-              pstmt.setString(2, post.getContent());
+              pstmt.setInt(1, post.getAge());
+              pstmt.setInt(2, post.getAge());
               int i = pstmt.executeUpdate();
               pstmt.close();
               connection.commit();

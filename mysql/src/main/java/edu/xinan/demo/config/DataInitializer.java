@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.xinan.demo.config;
 
 import edu.xinan.demo.rest.Post;
@@ -31,8 +26,8 @@ public class DataInitializer {
     @EventListener(ContextRefreshedEvent.class)
     public void initPosts() {
         log.info("initializing posts data...");
-        Stream.of("Post one", "Post two").forEach(
-            title -> this.posts.save(Post.builder().title(title).content("content of " + title).build())
+        Stream.of("bianzhaoyu", "xinan").forEach(
+            name -> this.posts.save(Post.builder().name(name).age(25).build())
                 .subscribe()
         );
     }

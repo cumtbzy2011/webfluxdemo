@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package edu.xinan.demo.rest;
 
 import lombok.*;
@@ -19,7 +14,7 @@ import lombok.*;
 public class Post {
     
     private Long id;
-    private String title;
-    private String content;
+    private String name;
+    private Integer age;
     
 }
