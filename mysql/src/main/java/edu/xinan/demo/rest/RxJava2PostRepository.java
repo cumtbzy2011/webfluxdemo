@@ -15,10 +15,10 @@ import java.sql.PreparedStatement;
 
 /**
  * spring-data-jpa是同步的，repository返回的结果并不是Mono或者Flux形式。
- *      可以使用第三方异步jdbc连接池rxjava2-jdbc，但是由于每个方法是异步的，
+ *     可以使用第三方异步jdbc连接池rxjava2-jdbc，但是由于每个方法是异步的，
  * 当数个异步方法组合起来时，并不能保证每个方法都是由一个线程按顺序调用的，
  * 这就使基于ThreadLocal的@Transactional无法使用
- *      当然，可以手动在一个异步方法中开启并提交事务，但是这还是失去了@Transactional组合
+ *     当然，可以手动在一个异步方法中开启并提交事务，但是这还是失去了@Transactional组合
  * 不同方法到一个事物的便利性和可扩展性
  * @author xinan
  */
