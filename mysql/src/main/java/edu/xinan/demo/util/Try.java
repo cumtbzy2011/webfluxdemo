@@ -1,6 +1,4 @@
-package com.xinan.demo.util;
-
-import org.reactivestreams.Publisher;
+package edu.xinan.demo.util;
 
 import java.util.Objects;
 import java.util.function.Function;
