@@ -11,5 +11,22 @@
 
     <artifactId>mysql</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-jdbc</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.davidmoten</groupId>
+            <artifactId>rxjava2-jdbc</artifactId>
+            <version>0.1-RC23</version>
+        </dependency>
+    </dependencies>
 
 </project>
